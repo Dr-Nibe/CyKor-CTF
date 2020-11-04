@@ -4,8 +4,8 @@ from ctypes.util import *
 
 r = process("./room_escape")
 
-r.sendlineafter("3. post-it", "1")
-r.recvuntil("Input password. (0000 ~ 9999)")
+r.sendlineafter("> ", "1")
+r.recvuntil("> ")
 
 libc = CDLL(find_library('c'))
 seed = libc.time(0)

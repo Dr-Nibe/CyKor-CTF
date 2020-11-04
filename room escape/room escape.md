@@ -39,7 +39,7 @@ print(password_decoded)
 
 ## 2. computer
 
-![image](https://user-images.githubusercontent.com/59759771/96142485-1c784d80-0f3d-11eb-9d06-a79a60526d20.png)
+![image](https://user-images.githubusercontent.com/59759771/97826779-dfb2a180-1d05-11eb-8c63-507ac5f492a7.png)
 
 zip파일의 key.txt 파일에는 암호가 걸려 있다. 암호에 대한 힌트는 얻을 수 없다. 게싱으로 풀면 인정.
 
@@ -74,16 +74,14 @@ a4cefa0ef4fc6ec2dc9b6e870d6fa63cd0ee44337506923884a4f013fe702899
 0000~9999 범위 밖의 숫자를 입력해보면 금고의 패스워드를 만드는 루틴을 알아낼 수 있다. 현재 시간을 시드로 해서 랜덤값을 생성한다. 파이썬의 `ctypes` 모듈로 랜덤값을 재현할 수 있다.
 
 ```python
-# solve_rand.py
-
 from pwn import *
 from ctypes import *
 from ctypes.util import *
 
 r = process("./room_escape")
 
-r.sendlineafter("3. post-it", "1")
-r.recvuntil("Input password. (0000 ~ 9999)")
+r.sendlineafter("> ", "1")
+r.recvuntil("> ")
 
 libc = CDLL(find_library('c'))
 seed = libc.time(0)
@@ -95,7 +93,7 @@ r.sendline(str(ran).rjust(4, '0'))
 r.interactive()
 ```
 
-![image](https://user-images.githubusercontent.com/59759771/96144163-d45a2a80-0f3e-11eb-8e19-2f246926e101.png)
+![image](https://user-images.githubusercontent.com/59759771/97826354-bcd3bd80-1d04-11eb-9b7f-4f0a892e5a54.png)
 
 <br>
 
@@ -119,6 +117,6 @@ HxD로 보면 허프만 코드가 손상되어 있다. 원상복구해준다.
 
 ![image-20201015235126808](C:/Users/sjjo0/AppData/Roaming/Typora/typora-user-images/image-20201015235126808.png)
 
-앞에서 구한 key를 passphrase에 넣으면 flag.txt 파일을 뽑아낼 수 있다. `steghide`를 사용해야 한다는 건 약간의 게싱. hi.txt 파일의 내용이 힌트인 거 같기도 하고.
+앞에서 구한 key를 passphrase에 넣으면 flag.txt 파일을 뽑아낼 수 있다. `steghide`를 사용해야 한다는 건 약간의 게싱.
 
 ![image](https://user-images.githubusercontent.com/59759771/96147108-f4d7b400-0f41-11eb-91c6-a0c7f8173347.png)
