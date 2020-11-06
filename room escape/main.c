@@ -48,7 +48,8 @@ void safe() {
 input:
     puts("\nInput password. (0000 ~ 9999. 'q' to give up)");
     printf("> ");
-    srand(time(0));
+    time_t seed = time(0);
+    srand(seed);
     pw = rand() % 10000;
     read_line(input_char, 8);
 
